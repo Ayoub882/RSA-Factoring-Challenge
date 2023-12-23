@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+import sympy
+import sys
+
+def factorize_number(number):
+    """
+    Factorize a given number into its prime components.
+
+    Args:
+    - number (int): The number to factorize.
+
+    Returns:
+    - list: A list of tuples representing prime factors and their corresponding exponents.
+    """
+    factors = sympy.factorint(number)
+    return factors.items()
+
+def main(filename):
+    """
+    Main function to read numbers from a file and print their factorizations.
+
+    Args:
+    - filename (str): The name of the file containing natural numbers to factorize.
+    """
+    with open(filename, 'r') as file:
+        numbers = file.read().splitlines()
+
+    for number in numbers:
+        factorizations = factorize_number(int(number))
+        for factor, exponent in factorizations:
+            print(f"{number}={factor}^{exponent}")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python factors.py <file>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+    main(filename)
+
