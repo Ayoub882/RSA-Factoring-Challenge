@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import sympy
+
 import sys
+import math
 
 def factorize_number(number):
     """
@@ -10,10 +11,12 @@ def factorize_number(number):
     - number (int): The number to factorize.
 
     Returns:
-    - list: A list of tuples representing prime factors and their corresponding exponents.
+    - tuple: A tuple representing two factors of the given number.
     """
-    factors = sympy.factorint(number)
-    return factors.items()
+    for i in range(2, int(math.sqrt(number)) + 1):
+        if number % i == 0:
+            return i, number // i
+    return None, None
 
 def main(filename):
     """
@@ -26,15 +29,14 @@ def main(filename):
         numbers = file.read().splitlines()
 
     for number in numbers:
-        factorizations = factorize_number(int(number))
-        for factor, exponent in factorizations:
-            print(f"{number}={factor}^{exponent}")
+        p, q = factorize_number(int(number))
+        if p is not None and q is not None:
+            print(f"{number}={p}*{q}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python factors.py <file>")
+        print("Usage: factors <file>")
         sys.exit(1)
 
     filename = sys.argv[1]
     main(filename)
-

@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+import sys
+import sympy
+import time
+
+def factorize_rsa_number(n):
+    """
+    Factorize an RSA number into its prime components.
+
+    Args:
+    - n (int): The RSA number to factorize.
+
+    Returns:
+    - tuple: A tuple representing the prime factors p and q.
+    """
+    start_time = time.time()
+    factors = sympy.factorint(n)
+    end_time = time.time()
+
+    prime_factors = [factor for factor, exponent in factors.items()]
+    if len(prime_factors) == 2:
+        return tuple(prime_factors)
+    else:
+        return None
+
+def main(filename):
+    """
+    Main function to factorize an RSA number from a file.
+
+    Args:
+    - filename (str): The name of the file containing the RSA number.
+    """
+    with open(filename, 'r') as file:
+        n = int(file.read().strip())
+
+    prime_factors = factorize_rsa_number(n)
+    if prime_factors is not None:
+        print(f"RSA Number: {n}")
+        print(f"Prime Factors (p, q): {prime_factors}")
+    else:
+        print("Failed to factorize the RSA number.")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python rsa_factoring.py <file>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+    main(filename)
+
